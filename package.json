@@ -1,0 +1,21 @@
+{
+  "name": "deadlock-bot",
+  "version": "1.0.0",
+  "main": "dist/bot.js",
+  "scripts": {
+    "start": "node dist/bot.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.80",
+    "discord.js": "^14.15.1",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^20.19.19",
+    "@types/node-fetch": "^2.6.13",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.3.3"
+  }
+}
