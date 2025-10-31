@@ -195,8 +195,6 @@ async function notifyRecentMatches() {
   if (storageChanged) writeStorage(storage);
 }
 
-//test deploy
-
 // Gather all required data for match image
 async function gatherMatchImageData(players: any[], matchId: string): Promise<MatchImageData | undefined> {
   // Fetch full match metadata from Deadlock API
