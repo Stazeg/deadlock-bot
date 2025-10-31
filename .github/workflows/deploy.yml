@@ -1,0 +1,48 @@
+name: Deploy Deadlock Bot
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to DigitalOcean via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            echo "🚀 Starting deploy on $(hostname)"
+            
+            # === подключаем nvm ===
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 20
+            
+            # === обновляем проект ===
+            cd /home/deploy/deadlock-bot
+            git fetch origin master
+            git reset --hard origin/master
+            
+            # === устанавливаем зависимости и билдим ===
+            npm ci
+            npm run build
+            
+            # === перезапускаем процесс ===
+            pm2 restart deadlock-bot || pm2 start npm --name "deadlock-bot" -- start
+            
+            # === сохраняем состояние PM2 ===
+            pm2 save
+
+            echo "✅ Deploy completed successfully"
