@@ -25,6 +25,9 @@ jobs:
           script: |
             echo "🚀 Starting deploy on $(hostname)"
             
+            # === подключаем nvm ===
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             # === nvm ===
             nvm use 20
             
